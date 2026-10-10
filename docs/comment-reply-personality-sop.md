@@ -65,3 +65,11 @@ Never copy these automatically. Generate an original response specific to the re
 
 ## Deployment gate
 This SOP is instructions, NOT a deployed Instagram bot. Default to review/draft mode until API permissions, parent-comment threaded replies, verified @handles, rate limits, deduplication, human review and LinkDM/Meta trigger separation have been tested. Do not claim it is live until an end-to-end reply is verified.
+
+## Verified Windsor.ai Instagram connector contract (2026-10-10; read-only inspection)
+- Connected Instagram account: oceancallingretreats. The connector advertises `reply_to_comment` with required `comment_id` (original comment ID) and `message` (1–2200 characters). This is the threaded reply action. NEVER use `create_comment` for replying: it requires `media_id` and makes a top-level comment.
+- Read fields available include `comment_id`, `comment_parent_id`, `comment_text`, `comment_username`, `comment_timestamp`, `media_id`, `media_caption`. `comment_username` may be empty without moderation access; do not invent @handles. Verify mapping of each comment to the relevant post before drafting.
+- Windsor.ai currently lists `delete_comment` and `hide_comment` but NO `edit_comment` action. Therefore correct and approve BEFORE posting; never promise edits to published replies. Do not delete/repost without explicit approval.
+- The connector advertising an action is not proof that the account token has permission to execute it. Verify with one explicitly approved test comment, then read back the thread and confirm parent-child association.
+- Keep old automation safety limits (one-hour delay, max 18 threaded replies per run, human review for complaints/welfare/safety/refunds/legal/deposits/orca-permit cases) until Rocío changes them. V2 voice rules override old generic 'cute/excited' or engagement-bait wording.
+- No unattended runner, webhook, scheduler, token rotation, approval queue, deduplication, audit log, or error handling has been verified. Never label automation live until those are implemented and tested.
